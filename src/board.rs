@@ -1,7 +1,6 @@
-use dioxus::prelude::{*};
-use crate::tile::{Tile, PieceType}; // Importing the Tile component and PieceType from tile module
-use rand::Rng;
-use core::time::Duration;
+use dioxus::{prelude::*, html::switch};
+use crate::enums::piece_type::PieceType;
+use crate::tile::Tile;
 
 pub type Board = [[PieceType; 10]; 23];
 
@@ -11,28 +10,7 @@ pub struct BoardProps {
 }
 
 pub fn Board(cx: Scope<BoardProps>) -> Element {
-    let board = use_state(cx, || cx.props.startingBoardState.clone());
-
-    use_coroutine(cx, |_: UnboundedReceiver<i32>| {
-        to_owned![board];
-
-        async move {
-            loop {
-                let mut rng = rand::thread_rng();
-                let mut newBoard : Board = Default::default();
-                for i in 0..23 {
-                    for j in 0..10 {
-                        
-                        newBoard[i][j] = PieceType::try_from(rng.gen_range(0..7)).expect("Out of range");
-                        
-                    }
-                }
-                board.set(newBoard);
-                tokio::time::sleep(Duration::from_millis(10)).await;
-                
-            }
-        }
-    });
+    let mut board = cx.props.startingBoardState.clone();
 
     cx.render(rsx! {
         div {

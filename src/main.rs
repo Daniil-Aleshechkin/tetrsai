@@ -1,12 +1,12 @@
 #![allow(non_snake_case)]
 use dioxus::prelude::{*};
 
-// Import the other modules
 mod board;
+mod enums;
 mod tile;
 
 use board::Board;
-use tile::PieceType;
+use enums::piece_type::PieceType;
 
 fn main() {
     dioxus_desktop::launch(App);
