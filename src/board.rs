@@ -1,6 +1,9 @@
-use dioxus::{prelude::*, html::switch};
+use dioxus::prelude::*;
 use crate::enums::piece_type::PieceType;
 use crate::tile::Tile;
+
+use std::time::Duration;
+use rand::Rng;
 
 pub type Board = [[PieceType; 10]; 23];
 
@@ -10,7 +13,28 @@ pub struct BoardProps {
 }
 
 pub fn Board(cx: Scope<BoardProps>) -> Element {
-    let mut board = cx.props.startingBoardState.clone();
+    let board = use_state(cx, || { cx.props.startingBoardState.clone()});
+
+    use_coroutine(cx, |_: UnboundedReceiver<i32>| {
+        to_owned![board];
+
+        async move {
+            loop {
+                let mut rng = rand::thread_rng();
+                let mut newBoard : Board = Default::default();
+                for i in 0..23 {
+                    for j in 0..10 {
+                        
+                        newBoard[i][j] = PieceType::try_from(rng.gen_range(0..7)).expect("Out of range");
+                        
+                    }
+                }
+                board.set(newBoard);
+                tokio::time::sleep(Duration::from_millis(10)).await;
+                
+            }
+        }
+    });
 
     cx.render(rsx! {
         div {
