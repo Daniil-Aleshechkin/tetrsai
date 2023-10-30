@@ -20,6 +20,7 @@ pub fn Board(cx: Scope<BoardProps>) -> Element {
 
         async move {
             loop {
+                tokio::time::sleep(Duration::from_millis(1000000)).await;
                 let mut rng = rand::thread_rng();
                 let mut newBoard : Board = Default::default();
                 for i in 0..23 {
@@ -30,7 +31,7 @@ pub fn Board(cx: Scope<BoardProps>) -> Element {
                     }
                 }
                 board.set(newBoard);
-                tokio::time::sleep(Duration::from_millis(1000000)).await;
+                
                 
             }
         }
