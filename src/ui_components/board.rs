@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use crate::enums::piece_type::PieceType;
-use crate::tile::Tile;
 
+use super::tile::Tile;
 use std::time::Duration;
 use rand::Rng;
 
@@ -30,7 +30,7 @@ pub fn Board(cx: Scope<BoardProps>) -> Element {
                     }
                 }
                 board.set(newBoard);
-                tokio::time::sleep(Duration::from_millis(10)).await;
+                tokio::time::sleep(Duration::from_millis(1000000)).await;
                 
             }
         }
@@ -41,6 +41,7 @@ pub fn Board(cx: Scope<BoardProps>) -> Element {
             display: "grid",
             grid_template_columns: "repeat(10, 1em)",
             grid_template_rows: "repear(10, 1em)",
+            margin_top: "3em",
             for i in 0..23 {
                 for j in 0..10 {
                     Tile {
