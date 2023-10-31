@@ -12,20 +12,20 @@ fn generate_bag() -> [PieceType; 7] {
         bag.swap(i, rng.gen_range(0..7));
     }
 
-    *bag
+    bag
 }
 
 trait Fill {
-    pub fn fill_bag(&self) {}
+    fn fill_bag(&mut self) {}
 }
 
 impl Fill for VecDeque<PieceType> {
-    fn fill_bag(&self) {
+    fn fill_bag(&mut self) {
         if self.len() <= 7 {
-            self.extend(generate_bag());
-            self.extend(generate_bag());
+            self.extend(generate_bag().iter());
+            self.extend(generate_bag().iter());
         } else if self.len() <= 14 {
-            self.extend(generate_bag());
+            self.extend(generate_bag().iter());
         }
     }
 }
