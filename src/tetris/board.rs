@@ -87,3 +87,16 @@ pub fn can_piece_fit_in_location(board: Board, position: Position, piece: PieceT
         None => false
     }
 }
+
+pub fn get_piece_starting_pos(piece: PieceType) -> Position {
+    match piece {
+        PieceType::I => Position { x: 2, y: 0 },
+        PieceType::T |
+        PieceType::J |
+        PieceType::L |
+        PieceType::S |
+        PieceType::Z => Position { x: 3, y: 0 },
+        PieceType::O => Position { x: 4, y: 0 },
+        PieceType::None => Position { x: 0, y: 0 },
+    }
+}
