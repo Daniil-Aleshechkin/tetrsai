@@ -1,5 +1,7 @@
 use num_enum::TryFromPrimitive;
 
+use crate::tetris::board::Position;
+
 use super::rotation::Rotation;
 
 #[derive(Clone, Debug, PartialEq, Copy, TryFromPrimitive)]
@@ -15,7 +17,7 @@ impl Default for PieceType {
 }
 
 pub trait PositionMap {
-    fn get_position_map(&self, rotation: Rotation) -> Option<[(i32, i32); 4]>;
+    fn get_position_map(&self, rotation: Rotation) -> Option<[Position; 4]>;
 }
 
 pub trait Color {
@@ -38,7 +40,7 @@ impl Color for PieceType {
 }
 
 impl PieceType {
-    fn t_positions(&self, rotation: Rotation) -> [(i32, i32); 4] {
+    fn t_positions(&self, rotation: Rotation) -> [(usize, usize); 4] {
         match rotation {
             Rotation::None => [(0, 1), (1, 0), (1, 1), (2, 1)],
             Rotation::Clock => [(1, 0), (1, 1), (2, 1), (1, 2)],
@@ -47,7 +49,7 @@ impl PieceType {
         }
     }
 
-    fn i_positions(&self, rotation: Rotation) -> [(i32, i32); 4] {
+    fn i_positions(&self, rotation: Rotation) -> [(usize, usize); 4] {
         match rotation {
             Rotation::None => [(0, 1), (1, 1), (2, 1), (3, 1)],
             Rotation::Clock => [(2, 0), (2, 1), (2, 2), (2, 3)],
@@ -56,7 +58,7 @@ impl PieceType {
         }
     }
 
-    fn j_positions(&self, rotation: Rotation) -> [(i32, i32); 4] {
+    fn j_positions(&self, rotation: Rotation) -> [(usize, usize); 4] {
         match rotation {
             Rotation::None => [(0, 0), (0, 1), (1, 1), (2, 1)],
             Rotation::Clock => [(1, 0), (2, 0), (1, 1), (1, 2)],
@@ -65,7 +67,7 @@ impl PieceType {
         }
     }
 
-    fn l_positions(&self, rotation: Rotation) -> [(i32, i32); 4] {
+    fn l_positions(&self, rotation: Rotation) -> [(usize, usize); 4] {
         match rotation {
             Rotation::None => [(2, 0), (0, 1), (1, 1), (2, 1)],
             Rotation::Clock => [(2, 2), (1, 2), (1, 1), (1, 0)],
@@ -74,7 +76,7 @@ impl PieceType {
         }
     }
 
-    fn s_positions(&self, rotation: Rotation) -> [(i32, i32); 4] {
+    fn s_positions(&self, rotation: Rotation) -> [(usize, usize); 4] {
         match rotation {
             Rotation::None => [(1, 0), (2, 0), (0, 1), (1, 1)],
             Rotation::Clock => [(1, 0), (1, 1), (2, 1), (2, 2)],
@@ -83,7 +85,7 @@ impl PieceType {
         }
     }
 
-    fn z_positions(&self, rotation: Rotation) -> [(i32, i32); 4] {
+    fn z_positions(&self, rotation: Rotation) -> [(usize, usize); 4] {
         match rotation {
             Rotation::None => [(0, 0), (2, 1), (1, 0), (1, 1)],
             Rotation::Clock => [(2, 0), (1, 1), (2, 1), (1, 2)],
@@ -91,21 +93,21 @@ impl PieceType {
             Rotation::Counter => [(0, 1), (1, 0), (1, 1), (0, 2)],
         }
     }
-    fn o_positions(&self, _: Rotation) -> [(i32, i32); 4] {
+    fn o_positions(&self, _: Rotation) -> [(usize, usize); 4] {
         [(0,0), (0,1), (1,0), (1,1)]
     }
 }
 
 impl PositionMap for PieceType {
-    fn get_position_map(&self, rotation: Rotation) -> Option<[(i32, i32); 4]> {
+    fn get_position_map(&self, rotation: Rotation) -> Option<[Position; 4]> {
         match *self {
-            PieceType::T => Some(self.t_positions(rotation)),
-            PieceType::I => Some(self.i_positions(rotation)),
-            PieceType::J => Some(self.j_positions(rotation)),
-            PieceType::L => Some(self.l_positions(rotation)),
-            PieceType::O => Some(self.o_positions(rotation)),
-            PieceType::S => Some(self.s_positions(rotation)),
-            PieceType::Z => Some(self.z_positions(rotation)),
+            PieceType::T => Some(self.t_positions(rotation).map(|x| Position::from_tuple(x))),
+            PieceType::I => Some(self.i_positions(rotation).map(|x| Position::from_tuple(x))),
+            PieceType::J => Some(self.j_positions(rotation).map(|x| Position::from_tuple(x))),
+            PieceType::L => Some(self.l_positions(rotation).map(|x| Position::from_tuple(x))),
+            PieceType::O => Some(self.o_positions(rotation).map(|x| Position::from_tuple(x))),
+            PieceType::S => Some(self.s_positions(rotation).map(|x| Position::from_tuple(x))),
+            PieceType::Z => Some(self.z_positions(rotation).map(|x| Position::from_tuple(x))),
             PieceType::None => None,
         }
     }

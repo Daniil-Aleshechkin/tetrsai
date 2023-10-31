@@ -19,8 +19,8 @@ pub fn Piece(cx: Scope<PieceProps>) -> Element {
                 for coord in positionMap {
                     div {
                         position: "absolute",
-                        left : "{coord.0}em",
-                        top : "{coord.1}em",
+                        left : "{coord.x}em",
+                        top : "{coord.y}em",
                         width : "1em",
                         height : "1em",
                         background_color: "{piece.get_color()}",

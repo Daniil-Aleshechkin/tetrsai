@@ -5,6 +5,7 @@ use dioxus::prelude::{*};
 
 mod ui_components;
 mod enums;
+mod tetris;
 
 use enums::piece_type::PieceType;
 use enums::rotation::Rotation;

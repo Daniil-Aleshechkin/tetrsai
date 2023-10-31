@@ -5,7 +5,7 @@ use super::tile::Tile;
 use std::time::Duration;
 use rand::Rng;
 
-pub type Board = [[PieceType; 10]; 23];
+use crate::tetris::board::Board;
 
 #[derive(PartialEq, Props)]
 pub struct BoardProps {

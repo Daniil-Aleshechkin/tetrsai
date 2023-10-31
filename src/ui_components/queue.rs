@@ -3,8 +3,6 @@ use dioxus::prelude::*;
 use crate::enums::{piece_type::PieceType, rotation::Rotation};
 use super::piece::Piece;
 
-use std::collections::VecDeque;
-
 #[derive(PartialEq, Props)]
 pub struct QueueProps {
     queue: [PieceType; QUEUE_SIZE],

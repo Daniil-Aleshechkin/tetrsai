@@ -5,16 +5,18 @@ use dioxus::prelude::*;
 use crate::enums::piece_type::PieceType;
 use crate::enums::rotation::Rotation;
 use crate::ui_components::queue::QUEUE_SIZE;
+use crate::tetris::board::{Board, Position};
 
 use super::board::Board;
 use super::piece::Piece;
 use super::queue::Queue;
 
+
 #[derive(Clone, PartialEq)]
 struct TetrisGameState {
     currentPieceType: PieceType,
     currentPieceRotation: Rotation,
-    currentPieceLocation: (i32, i32),
+    currentPieceLocation: Position,
     holdPieceType: PieceType,
     boardState: Board,
     queue: VecDeque<PieceType>,
@@ -51,7 +53,7 @@ pub fn Tetris(cx: Scope) -> Element {
 
     let tetrisGameState = use_state(cx, || TetrisGameState {
         currentPieceType : PieceType::I,
-        currentPieceLocation: (3,3),
+        currentPieceLocation: Position::from_tuple((3,3)),
         currentPieceRotation: Rotation::None,
         boardState: startingBoard,
         holdPieceType: PieceType::L,
@@ -84,8 +86,8 @@ pub fn Tetris(cx: Scope) -> Element {
                 position: "relative",
                 div {
                     position: "absolute",
-                    top: "{tetrisGameState.currentPieceLocation.0}em",        
-                    left: "{tetrisGameState.currentPieceLocation.1}em",        
+                    top: "{tetrisGameState.currentPieceLocation.y}em",        
+                    left: "{tetrisGameState.currentPieceLocation.x}em",        
                     Piece {
                         piece: tetrisGameState.currentPieceType,
                         rotation: tetrisGameState.currentPieceRotation,
