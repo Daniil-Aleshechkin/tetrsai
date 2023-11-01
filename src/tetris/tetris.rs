@@ -1,5 +1,5 @@
 use std::iter::repeat;
-use std::{collections::VecDeque, cell::RefCell, rc::Rc};
+use std::collections::VecDeque;
 
 use crate::enums::piece_type::PositionMap;
 use crate::enums::{piece_type::PieceType, rotation::Rotation};
@@ -50,7 +50,6 @@ pub fn hard_drop(initialState: TetrisGameState, queue: Option<&mut VecDeque<Piec
         let yPos = offset.y + newState.currentPieceLocation.y;
         
         if initialState.boardState[yPos][xPos] != PieceType::None {
-            print!("CURRENT PIECE RENDER LOSS");
             isLoseFromCurrentPiece = true;
             break;
         }
