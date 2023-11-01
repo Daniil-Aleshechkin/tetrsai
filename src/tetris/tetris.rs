@@ -8,18 +8,18 @@ use super::board::{Board, Position, get_piece_starting_pos, get_lowest_piece_boa
 
 #[derive(Copy, Clone, PartialEq)]
 pub struct TetrisGameState {
-    currentPieceType: PieceType,
-    currentPieceRotation: Rotation,
-    currentPieceLocation: Position,
-    holdPieceType: PieceType,
-    boardState: Board,
-    previewQueue: [PieceType; 5],
-    isLose: bool
+    pub currentPieceType: PieceType,
+    pub currentPieceRotation: Rotation,
+    pub currentPieceLocation: Position,
+    pub holdPieceType: PieceType,
+    pub boardState: Board,
+    pub previewQueue: [PieceType; 5],
+    pub isLose: bool
 }
 
 pub fn hard_drop(initialState: TetrisGameState, queue: Option<&mut VecDeque<PieceType>>) -> TetrisGameState {
 
-    if initialState.currentPieceType == PieceType::None {
+    if initialState.currentPieceType == PieceType::None || initialState.isLose {
         return initialState;
     }
 
@@ -44,17 +44,36 @@ pub fn hard_drop(initialState: TetrisGameState, queue: Option<&mut VecDeque<Piec
     newState.currentPieceRotation = Rotation::None;
     newState.currentPieceType = nextPiece;
 
+    let mut isLoseFromCurrentPiece = false;
+    for offset in newState.currentPieceType.get_position_map(newState.currentPieceRotation).expect("Guard exists for None") {
+        let xPos = offset.x + newState.currentPieceLocation.x;
+        let yPos = offset.y + newState.currentPieceLocation.y;
+        
+        if initialState.boardState[yPos][xPos] != PieceType::None {
+            isLoseFromCurrentPiece = true;
+            break;
+        }
+    }
+
     let hardDropLocation = get_lowest_piece_board_pos(
                                         initialState.boardState,
                                      initialState.currentPieceLocation,
                                         initialState.currentPieceType, 
                                      initialState.currentPieceRotation).expect("No y location found for hard drop");
 
-    for offset in initialState.currentPieceType.get_position_map(initialState.currentPieceRotation).expect("Guard exists for None") {
+    let mut isLoseFromPlacement = true;
+    for offset in initialState.currentPieceType.get_position_map(initialState.currentPieceRotation).expect("Guard exists for None") {  
         let xPos = offset.x + initialState.currentPieceLocation.x;
         let yPos = offset.y + hardDropLocation;
+
+        if yPos >= 3 && isLoseFromPlacement {
+            isLoseFromPlacement = false;
+        }
+
         newState.boardState[yPos][xPos] = initialState.currentPieceType;
     }
+    
+    newState.isLose = isLoseFromCurrentPiece || isLoseFromPlacement;
 
     newState
 }
