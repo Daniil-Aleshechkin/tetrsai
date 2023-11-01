@@ -15,7 +15,7 @@ fn generate_bag() -> [PieceType; 7] {
     bag
 }
 
-trait Fill {
+pub trait Fill {
     fn fill_bag(&mut self) {}
 }
 
