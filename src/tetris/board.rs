@@ -47,20 +47,20 @@ impl Position {
     }
 
     pub fn fits_in_board(&self) -> bool {
-        self.x >= 0 && self.x < BOARD_WIDTH && self.y >= 0 && self.y < BOARD_HEIGHT
+        self.x < BOARD_WIDTH && self.y < BOARD_HEIGHT
     }
 
     pub fn add(&self, position: Position) -> Position{
-        Position { x: self.x, y: self.y }
+        Position { x: self.x + position.x, y: self.y + position.y }
     }
 }
 
-pub type Board = [[PieceType; 10]; 23];
+pub type Board = [[PieceType; BOARD_WIDTH]; BOARD_HEIGHT];
 
 pub fn get_lowest_piece_board_pos (board: Board, position: Position, piece: PieceType, rotation: Rotation) -> Option<usize> {
-    for i in position.y..BOARD_HEIGHT {
-        if can_piece_fit_in_location(board, position.down(i), piece, rotation) {
-            return Some(i);
+    for i in 0..BOARD_HEIGHT {
+        if !can_piece_fit_in_location(board, position.down(i), piece, rotation) {
+            return Some(i - 1 + position.y);
         }
     }
 

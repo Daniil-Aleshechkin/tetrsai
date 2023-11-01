@@ -29,14 +29,14 @@ pub fn hard_drop(initialState: TetrisGameState, queue: Option<&mut VecDeque<Piec
 
     let next = match queue {
         Some(q) => {
-            q.pop_back();
+            q.pop_front();
             q.fill_bag();
             q.iter().take(5).cloned().collect::<Vec<_>>()
         },
         None => {
             initialState.previewQueue[1..5].to_vec()
         },
-    }.into_iter().take(5).chain(repeat(PieceType::None)).collect::<Vec<_>>();
+    }.into_iter().chain(repeat(PieceType::None)).take(5).collect::<Vec<_>>();
 
     newState.previewQueue = next[..5].try_into().expect("Guarenteed to be 5 elements here");
 
@@ -50,6 +50,7 @@ pub fn hard_drop(initialState: TetrisGameState, queue: Option<&mut VecDeque<Piec
         let yPos = offset.y + newState.currentPieceLocation.y;
         
         if initialState.boardState[yPos][xPos] != PieceType::None {
+            print!("CURRENT PIECE RENDER LOSS");
             isLoseFromCurrentPiece = true;
             break;
         }

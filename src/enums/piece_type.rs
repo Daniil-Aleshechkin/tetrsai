@@ -1,3 +1,5 @@
+use std::fmt::{Display, self};
+
 use num_enum::TryFromPrimitive;
 
 use crate::tetris::board::Position;
@@ -8,6 +10,23 @@ use super::rotation::Rotation;
 #[repr(i32)]
 pub enum PieceType {
     T, I, J, L, O, S, Z, None
+}
+
+
+impl Display for PieceType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let printable = match *self {
+            PieceType::T => "T",
+            PieceType::I => "I",
+            PieceType::J => "J",
+            PieceType::L => "L",
+            PieceType::O => "O",
+            PieceType::S => "S",
+            PieceType::Z => "Z",
+            PieceType::None => "N",
+        };
+        write!(f, "{}", printable)
+    }
 }
 
 impl Default for PieceType {
