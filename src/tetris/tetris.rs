@@ -4,7 +4,7 @@ use std::collections::VecDeque;
 use crate::enums::piece_type::PositionMap;
 use crate::enums::{piece_type::PieceType, rotation::Rotation};
 use super::queue::Fill;
-use super::board::{Board, Position, get_piece_starting_pos, get_lowest_piece_board_pos};
+use super::board::{Board, Position, get_piece_starting_pos, get_lowest_piece_board_pos, BOARD_HEIGHT};
 
 #[derive(Copy, Clone, PartialEq)]
 pub struct TetrisGameState {
@@ -14,7 +14,10 @@ pub struct TetrisGameState {
     pub holdPieceType: PieceType,
     pub boardState: Board,
     pub previewQueue: [PieceType; 5],
-    pub isLose: bool
+    pub isLose: bool,
+    pub linesSent: i32,
+    pub combo: i32,
+    pub backToBack: i32,
 }
 
 pub fn hard_drop(initialState: TetrisGameState, queue: Option<&mut VecDeque<PieceType>>) -> TetrisGameState {
@@ -27,18 +30,20 @@ pub fn hard_drop(initialState: TetrisGameState, queue: Option<&mut VecDeque<Piec
 
     let nextPiece = initialState.previewQueue[0];
 
-    let next = match queue {
+    newState.previewQueue = match queue {
         Some(q) => {
             q.pop_front();
             q.fill_bag();
-            q.iter().take(5).cloned().collect::<Vec<_>>()
+            q.iter().take(5).cloned().collect::<Vec<_>>().into_iter().chain(repeat(PieceType::None)).take(5).collect::<Vec<_>>()[..5].try_into().expect("Guarenteed to be 5 elements here")
         },
         None => {
-            initialState.previewQueue[1..5].to_vec()
+            let mut next = [PieceType::default(); 5];
+            for (i, p) in initialState.previewQueue[1..5].iter().enumerate() {
+                next[i] = p.clone();
+            }
+            next
         },
-    }.into_iter().chain(repeat(PieceType::None)).take(5).collect::<Vec<_>>();
-
-    newState.previewQueue = next[..5].try_into().expect("Guarenteed to be 5 elements here");
+    };
 
     newState.currentPieceLocation = get_piece_starting_pos(nextPiece);
     newState.currentPieceRotation = Rotation::None;
@@ -73,7 +78,26 @@ pub fn hard_drop(initialState: TetrisGameState, queue: Option<&mut VecDeque<Piec
         newState.boardState[yPos][xPos] = initialState.currentPieceType;
     }
     
+    let nextBoardNonClearedLines = newState.boardState.iter().cloned().filter(|&row| !is_full_row(row)).collect::<Vec<_>>();
+
+    let linesCleared = BOARD_HEIGHT - nextBoardNonClearedLines.len(); 
+
+    newState.boardState = repeat([PieceType::default(); 10]).take(linesCleared).chain(nextBoardNonClearedLines.into_iter()).collect::<Vec<_>>().try_into().expect("linescleared + filtered lines should board height");
+
     newState.isLose = isLoseFromCurrentPiece || isLoseFromPlacement;
 
     newState
+}
+
+fn is_full_row(row: [PieceType; 10]) -> bool {
+    let mut isFull = true;
+
+    for piece in row {
+        if piece == PieceType::None {
+            isFull = false;
+            break;
+        }
+    }
+
+    isFull
 }

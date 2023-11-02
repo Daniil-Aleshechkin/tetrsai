@@ -22,6 +22,9 @@ fn test_hard_drop() {
         holdPieceType: PieceType::None,
         previewQueue: nextPieces,
         isLose: false,
+        linesSent: 0,
+            combo: 0,
+            backToBack: 0
     };
 
     let newGameState = hard_drop(gameState, Some(&mut pieceQueue)); 
@@ -47,6 +50,9 @@ fn test_full_hard_drop() {
         holdPieceType: PieceType::None,
         previewQueue: nextPieces,
         isLose: false,
+        linesSent: 0,
+        combo: 0,
+        backToBack: 0
     };
 
     let newGameState = hard_drop(gameState, Some(&mut pieceQueue)); 
