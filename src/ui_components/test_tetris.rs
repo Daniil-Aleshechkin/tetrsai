@@ -1,10 +1,11 @@
-use std::{collections::VecDeque, time::Duration};
 
-use dioxus::{prelude::{*, GlobalAttributes}, html::{input_data::keyboard_types::KeyboardEvent, geometry::euclid::default}};
+use std::collections::VecDeque;
+
+use dioxus::prelude::{*, GlobalAttributes};
 
 use dioxus_elements::input_data::keyboard_types::Key;
 
-use crate::{ui_components::tetris::Tetris, tetris::{tetris::{TetrisGameState, hard_drop, rotate_90, rotate_180, rotate_270, hold_piece, soft_drop, move_left, move_right}, queue::Fill, board::get_piece_starting_pos}, enums::{piece_type::PieceType, rotation::Rotation}};
+use crate::{ui_components::tetris::Tetris, tetris::{tetris::{TetrisGameState, hard_drop, rotate_90, rotate_180, rotate_270, hold_piece, soft_drop, move_left, move_right}, board::get_piece_starting_pos, queue::Fill}, enums::{piece_type::PieceType, rotation::Rotation}};
 
 pub fn TestTetris(cx: Scope) -> Element {
     let startingBoard = [[PieceType::default(); 10]; 23];
@@ -79,7 +80,7 @@ pub fn TestTetris(cx: Scope) -> Element {
     let handleInput = move |event: Event<KeyboardData>| {
        to_owned![tetrisState];
        to_owned![pieceQueue];
-       
+
         match event.data.key() {
             Key::Character(d) => {
                 print!("{0}", d);

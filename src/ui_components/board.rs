@@ -2,8 +2,6 @@ use dioxus::prelude::*;
 use crate::{enums::piece_type::PieceType, tetris::board::{BOARD_HEIGHT, BOARD_WIDTH}};
 
 use super::tile::Tile;
-use std::time::Duration;
-use rand::Rng;
 
 use crate::tetris::board::Board;
 

@@ -18,6 +18,7 @@ impl Position {
         Position { x: self.x, y: self.y + value }
     }
 
+    #[allow(dead_code)]
     pub fn up(&self, value: i32) -> Position {
         Position { x: self.x, y: self.y - value }
     }

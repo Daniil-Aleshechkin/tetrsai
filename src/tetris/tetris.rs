@@ -89,7 +89,7 @@ pub fn hard_drop(initialState: TetrisGameState, queue: Option<&mut VecDeque<Piec
             continue;
         }
 
-        if (newState.boardState[yPos as usize][xPos as usize] != PieceType::None) {
+        if newState.boardState[yPos as usize][xPos as usize] != PieceType::None {
             cornorCount += 1;
         }    
     }
@@ -102,13 +102,13 @@ pub fn hard_drop(initialState: TetrisGameState, queue: Option<&mut VecDeque<Piec
 
     newState.boardState = repeat([PieceType::default(); 10]).take(linesCleared).chain(nextBoardNonClearedLines.into_iter()).collect::<Vec<_>>().try_into().expect("linescleared + filtered lines should board height");
 
-    if (linesCleared == 4 || isTSpin) {
+    if linesCleared == 4 || isTSpin {
         newState.backToBack += 1;
     } else {
         newState.backToBack = 0;
     }
 
-    if (linesCleared != 0) {
+    if linesCleared != 0 {
         newState.combo += 1;
     } else {
         newState.combo = 0;
@@ -199,7 +199,7 @@ pub fn hold_piece(initialState: TetrisGameState, queue: Option<&mut VecDeque<Pie
     newState.hasHeld = true;
     newState.holdPieceType = initialState.currentPieceType;
 
-    if (initialState.holdPieceType == PieceType::None) {
+    if initialState.holdPieceType == PieceType::None {
         newState.currentPieceType = initialState.previewQueue[0];
 
         newState.previewQueue = match queue {
@@ -223,9 +223,9 @@ pub fn hold_piece(initialState: TetrisGameState, queue: Option<&mut VecDeque<Pie
     newState
 }
 
-
+#[allow(unused_variables)] 
 fn caculateLinesSent(lines_cleared: usize, is_tspin: bool, combo: usize, back_to_back: usize) -> usize {
-    let mut linesSent = 0;
+    let linesSent = 0;
 
     linesSent
 }

@@ -1,12 +1,7 @@
-use std::collections::VecDeque;
-
 use dioxus::prelude::*;
 
-use crate::enums::piece_type::PieceType;
 use crate::enums::rotation::Rotation;
 use crate::tetris::tetris::TetrisGameState;
-use crate::ui_components::queue::QUEUE_SIZE;
-use crate::tetris::board::{Board, Position};
 
 use super::board::Board;
 use super::piece::Piece;
