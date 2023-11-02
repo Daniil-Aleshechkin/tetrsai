@@ -1,8 +1,10 @@
+#![allow(unused_variables)]
+#![allow(unused_assignments)]
+#![allow(unused_imports)]
+
 use std::{collections::VecDeque, iter::repeat};
 
 use crate::{tetris::{tetris::{TetrisGameState, hard_drop, move_left, soft_drop}, board::{Board, Position, get_piece_starting_pos}, queue::Fill}, enums::{piece_type::PieceType, rotation::Rotation}, ui_components::piece};
-
-
 
 #[test]
 fn test_hard_drop() {
@@ -60,5 +62,6 @@ fn test_full_hard_drop() {
     };
 
     let mut newGameState =  hard_drop(gameState, Some(&mut pieceQueue));
+    
     newGameState = soft_drop(newGameState);
 }
