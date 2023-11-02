@@ -42,11 +42,12 @@ pub fn Board(cx: Scope<BoardProps>) -> Element {
             display: "grid",
             grid_template_columns: "repeat(10, 1em)",
             grid_template_rows: "repear(10, 1em)",
-            margin_top: "3em",
+           
             for y in 0..BOARD_HEIGHT {
                 for x in 0..BOARD_WIDTH {
                     Tile {
-                        piece: board[y][x]
+                        piece: board[y][x],
+                        isTransparent: y < 3 && board[y][x] == PieceType::None
                     }
                 }
             }

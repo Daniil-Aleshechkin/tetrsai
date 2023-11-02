@@ -5,49 +5,33 @@ pub const BOARD_WIDTH: usize = 10;
 
 #[derive(Copy, Clone, PartialEq)]
 pub struct Position {
-    pub x : usize, 
-    pub y : usize
+    pub x : i32, 
+    pub y : i32
 }
 
 impl Position {
-    pub fn from_tuple(tuple: (usize, usize)) -> Position {
+    pub fn from_tuple(tuple: (i32, i32)) -> Position {
         Position { x: tuple.0, y: tuple.1 }
     }
 
-    pub fn down(&self, value: usize) -> Position {
+    pub fn down(&self, value: i32) -> Position {
         Position { x: self.x, y: self.y + value }
     }
 
-    pub fn up(&self, value: usize) -> Position {
+    pub fn up(&self, value: i32) -> Position {
         Position { x: self.x, y: self.y - value }
     }
 
-    pub fn left(&self, value: usize) -> Position {
-        Position { x: self.x - 1, y: self.y + value }
+    pub fn left(&self, value: i32) -> Position {
+        Position { x: self.x - value, y: self.y}
     }
 
-    pub fn right(&self, value: usize) -> Position {
-        Position { x: self.x + 1, y: self.y + value }
-    }
-
-    pub fn down_one(&self) -> Position {
-        Position { x: self.x, y: self.y + 1 }
-    }
-
-    pub fn up_one(&self) -> Position {
-        Position { x: self.x, y: self.y - 1 }
-    }
-
-    pub fn right_one(&self) -> Position {
-        Position { x: self.x + 1, y: self.y }
-    }
-
-    pub fn left_one(&self) -> Position {
-        Position { x: self.x - 1, y: self.y + 1 }
+    pub fn right(&self, value: i32) -> Position {
+        Position { x: self.x + value, y: self.y }
     }
 
     pub fn fits_in_board(&self) -> bool {
-        self.x < BOARD_WIDTH && self.y < BOARD_HEIGHT
+        self.x < BOARD_WIDTH as i32 && self.y < BOARD_HEIGHT as i32 && self.x >= 0 && self.y >= 0
     }
 
     pub fn add(&self, position: Position) -> Position{
@@ -57,10 +41,10 @@ impl Position {
 
 pub type Board = [[PieceType; BOARD_WIDTH]; BOARD_HEIGHT];
 
-pub fn get_lowest_piece_board_pos (board: Board, position: Position, piece: PieceType, rotation: Rotation) -> Option<usize> {
+pub fn get_lowest_piece_board_pos (board: Board, position: Position, piece: PieceType, rotation: Rotation) -> Option<i32> {
     for i in 0..BOARD_HEIGHT {
-        if !can_piece_fit_in_location(board, position.down(i), piece, rotation) {
-            return Some(i - 1 + position.y);
+        if !can_piece_fit_in_location(board, position.down(i as i32), piece, rotation) {
+            return Some(i as i32 - 1 + position.y);
         }
     }
 
@@ -77,7 +61,7 @@ pub fn can_piece_fit_in_location(board: Board, position: Position, piece: PieceT
                     return false;
                 }
 
-                if board[minoPos.y][minoPos.x] != PieceType::None {
+                if board[minoPos.y as usize][minoPos.x as usize] != PieceType::None {
                     return false;
                 }
             }

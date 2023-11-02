@@ -59,7 +59,7 @@ impl Color for PieceType {
 }
 
 impl PieceType {
-    fn t_positions(&self, rotation: Rotation) -> [(usize, usize); 4] {
+    fn t_positions(&self, rotation: Rotation) -> [(i32, i32); 4] {
         match rotation {
             Rotation::None => [(0, 1), (1, 0), (1, 1), (2, 1)],
             Rotation::Clock => [(1, 0), (1, 1), (2, 1), (1, 2)],
@@ -68,7 +68,7 @@ impl PieceType {
         }
     }
 
-    fn i_positions(&self, rotation: Rotation) -> [(usize, usize); 4] {
+    fn i_positions(&self, rotation: Rotation) -> [(i32, i32); 4] {
         match rotation {
             Rotation::None => [(0, 1), (1, 1), (2, 1), (3, 1)],
             Rotation::Clock => [(2, 0), (2, 1), (2, 2), (2, 3)],
@@ -77,7 +77,7 @@ impl PieceType {
         }
     }
 
-    fn j_positions(&self, rotation: Rotation) -> [(usize, usize); 4] {
+    fn j_positions(&self, rotation: Rotation) -> [(i32, i32); 4] {
         match rotation {
             Rotation::None => [(0, 0), (0, 1), (1, 1), (2, 1)],
             Rotation::Clock => [(1, 0), (2, 0), (1, 1), (1, 2)],
@@ -86,7 +86,7 @@ impl PieceType {
         }
     }
 
-    fn l_positions(&self, rotation: Rotation) -> [(usize, usize); 4] {
+    fn l_positions(&self, rotation: Rotation) -> [(i32, i32); 4] {
         match rotation {
             Rotation::None => [(2, 0), (0, 1), (1, 1), (2, 1)],
             Rotation::Clock => [(2, 2), (1, 2), (1, 1), (1, 0)],
@@ -95,7 +95,7 @@ impl PieceType {
         }
     }
 
-    fn s_positions(&self, rotation: Rotation) -> [(usize, usize); 4] {
+    fn s_positions(&self, rotation: Rotation) -> [(i32, i32); 4] {
         match rotation {
             Rotation::None => [(1, 0), (2, 0), (0, 1), (1, 1)],
             Rotation::Clock => [(1, 0), (1, 1), (2, 1), (2, 2)],
@@ -104,7 +104,7 @@ impl PieceType {
         }
     }
 
-    fn z_positions(&self, rotation: Rotation) -> [(usize, usize); 4] {
+    fn z_positions(&self, rotation: Rotation) -> [(i32, i32); 4] {
         match rotation {
             Rotation::None => [(0, 0), (2, 1), (1, 0), (1, 1)],
             Rotation::Clock => [(2, 0), (1, 1), (2, 1), (1, 2)],
@@ -112,7 +112,7 @@ impl PieceType {
             Rotation::Counter => [(0, 1), (1, 0), (1, 1), (0, 2)],
         }
     }
-    fn o_positions(&self, _: Rotation) -> [(usize, usize); 4] {
+    fn o_positions(&self, _: Rotation) -> [(i32, i32); 4] {
         [(0,0), (0,1), (1,0), (1,1)]
     }
 }

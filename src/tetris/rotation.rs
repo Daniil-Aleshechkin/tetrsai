@@ -19,7 +19,7 @@ impl Add for Rotation {
                     Rotation::OneEighty => 2,
                     Rotation::Counter => 3,
                 }
-            ) % 3).expect("Rotation not found for add")
+            ) % 4).expect("Rotation not found for add")
     }
 
     type Output = Rotation;
