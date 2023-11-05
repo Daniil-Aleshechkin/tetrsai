@@ -1,6 +1,6 @@
 use crate::{tetris::board::{BOARD_HEIGHT, BOARD_WIDTH, Board}, enums::piece_type::PieceType};
 
-fn board_height(board: Board) -> usize {
+pub fn board_height(board: Board) -> usize {
     let mut maxHeight = 0;
     
     for x in 0..BOARD_WIDTH {
