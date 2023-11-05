@@ -4,6 +4,7 @@ use dioxus::prelude::{*};
 mod ui_components;
 mod enums;
 mod tetris;
+mod ai;
 
 #[cfg(test)]
 mod tests;

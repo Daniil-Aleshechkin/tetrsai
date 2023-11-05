@@ -3,7 +3,7 @@ use crate::enums::{piece_type::{PieceType, PositionMap}, rotation::Rotation};
 pub const BOARD_HEIGHT: usize = 23;
 pub const BOARD_WIDTH: usize = 10;
 
-#[derive(Copy, Clone, PartialEq)]
+#[derive(Copy, Clone, Hash, PartialEq, Eq)]
 pub struct Position {
     pub x : i32, 
     pub y : i32

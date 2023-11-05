@@ -1,10 +1,24 @@
 use std::iter::repeat;
 use std::collections::VecDeque;
 
+use crate::enums::action::Action;
 use crate::enums::piece_type::PositionMap;
 use crate::enums::{piece_type::PieceType, rotation::Rotation};
 use super::queue::Fill;
 use super::board::{Board, Position, get_piece_starting_pos, get_lowest_piece_board_pos, BOARD_HEIGHT, BOARD_WIDTH, can_piece_fit_in_location};
+
+pub fn get_next_state(action: Action, gameState: TetrisGameState, queue: Option<&mut VecDeque<PieceType>>) -> TetrisGameState {
+    match action {
+        Action::SoftDrop => soft_drop(gameState),
+        Action::HardDrop => hard_drop(gameState, queue),
+        Action::MoveLeft => move_left(gameState),
+        Action::MoveRight => move_right(gameState),
+        Action::HoldPiece => hold_piece(gameState, queue),
+        Action::Rotate90 => rotate_90(gameState),
+        Action::Rotate180 => rotate_180(gameState),
+        Action::Rotate270 => rotate_270(gameState),
+    }
+}
 
 #[derive(Copy, Clone, PartialEq)]
 pub struct TetrisGameState {
@@ -19,6 +33,7 @@ pub struct TetrisGameState {
     pub combo: usize,
     pub backToBack: usize,
     pub hasHeld: bool,
+    pub piecesPlaced: usize,
 }
 
 pub fn hard_drop(initialState: TetrisGameState, queue: Option<&mut VecDeque<PieceType>>) -> TetrisGameState {
@@ -51,13 +66,15 @@ pub fn hard_drop(initialState: TetrisGameState, queue: Option<&mut VecDeque<Piec
     newState.currentPieceType = nextPiece;
 
     let mut isLoseFromCurrentPiece = false;
-    for offset in newState.currentPieceType.get_position_map(newState.currentPieceRotation).expect("Guard exists for None") {
-        let xPos = offset.x + newState.currentPieceLocation.x;
-        let yPos = offset.y + newState.currentPieceLocation.y;
-        
-        if initialState.boardState[yPos as usize][xPos as usize] != PieceType::None {
-            isLoseFromCurrentPiece = true;
-            break;
+    if newState.currentPieceType != PieceType::None {    
+        for offset in newState.currentPieceType.get_position_map(newState.currentPieceRotation).expect("Guard exists for None") {
+            let xPos = offset.x + newState.currentPieceLocation.x;
+            let yPos = offset.y + newState.currentPieceLocation.y;
+            
+            if initialState.boardState[yPos as usize][xPos as usize] != PieceType::None {
+                isLoseFromCurrentPiece = true;
+                break;
+            }
         }
     }
 
@@ -118,6 +135,9 @@ pub fn hard_drop(initialState: TetrisGameState, queue: Option<&mut VecDeque<Piec
 
     newState.isLose = isLoseFromCurrentPiece || isLoseFromPlacement;
     newState.hasHeld = false;
+    
+    newState.piecesPlaced += 1;
+
     newState
 }
 

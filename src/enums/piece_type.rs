@@ -6,7 +6,7 @@ use crate::tetris::board::Position;
 
 use super::rotation::Rotation;
 
-#[derive(Clone, Debug, PartialEq, Copy, TryFromPrimitive)]
+#[derive(Clone, Hash, Debug, PartialEq, Eq, Copy, TryFromPrimitive)]
 #[repr(i32)]
 pub enum PieceType {
     T, I, J, L, O, S, Z, None

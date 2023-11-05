@@ -41,7 +41,8 @@ pub fn TestTetris(cx: Scope) -> Element {
             linesSent: 0,
             combo: 0,
             backToBack: 0,
-            hasHeld: false
+            hasHeld: false,
+            piecesPlaced: 0,
     }});
 
     // use_coroutine(cx, |_: UnboundedReceiver<i32>| {
